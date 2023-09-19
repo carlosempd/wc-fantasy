@@ -5,7 +5,6 @@ import { ToolbarModule } from 'src/app/shared/components/toolbar/toolbar.module'
 import { HomeRoutingModule } from './home-routing.module';
 import { InfoComponent } from './components/info/info.component';
 
-import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 
 
@@ -19,7 +18,6 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     ToolbarModule,
     HomeRoutingModule,
-    MatListModule,
     MatButtonModule
   ]
 })

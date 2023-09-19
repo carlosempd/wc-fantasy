@@ -1,5 +1,6 @@
 .info-container {
     margin-top: 2rem;
+    padding: 2rem;
 }
 
 .info-container > * {
@@ -10,4 +11,12 @@ button {
     height: 60px !important;
     width: 160px;
     margin-top: 1rem;
+}
+
+mat-list {
+    max-width: 80dvw;
+}
+
+ul {
+    line-height: 200%;
 }
