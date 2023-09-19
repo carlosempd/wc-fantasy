@@ -10,7 +10,7 @@ export interface Player {
     weight: string
     injured: boolean
     photo: string,
-    position: position;
+    position: POSITION;
 }
   
 export interface Birth {
@@ -19,7 +19,7 @@ export interface Birth {
     country: string
 }
 
-enum position {
+export enum POSITION {
     str = 'Striker',
     def = "Defender",
     mid = "Midfielder",
