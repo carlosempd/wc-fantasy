@@ -1,16 +1,7 @@
 <section class="dialog-container">
     <h1 mat-dialog-title>Draft selection</h1>
     <mat-dialog-content>
-        <mat-list>
-            <mat-list-item class="item" *ngFor="let player of data">
-              <img matListItemAvatar [src]="player.photo" alt="...">
-              <h3 matListItemTitle>{{player.name}}</h3>
-              <p matListItemLine>
-                <span>{{ player.position }}</span>
-                <span class="demo-2"> -- {{ player.nationality }}</span>
-              </p>
-            </mat-list-item>
-          </mat-list>
+        <app-item-list [players]="data"></app-item-list>
     </mat-dialog-content>
 
     <mat-dialog-actions>

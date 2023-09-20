@@ -1,0 +1,10 @@
+.my-team-container {
+    padding-top: 80px;
+}
+
+@media (max-width: 510px) {
+    .players-list {
+        flex-direction: column !important;
+        align-items: center;
+    }
+}

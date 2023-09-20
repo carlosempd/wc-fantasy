@@ -6,17 +6,18 @@ import { ToolbarModule } from 'src/app/shared/components/toolbar/toolbar.module'
 import { SearchComponent } from './components/search/search.component';
 import { PlayersListComponent } from './components/players-list/players-list.component';
 import { DraftDialogComponent } from './components/draft-dialog/draft-dialog.component';
+import { MyTeamComponent } from './components/my-team/my-team.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatListModule } from '@angular/material/list';
+import { ItemListModule } from 'src/app/shared/components/item-list/item-list.module';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { MatListModule } from '@angular/material/list';
     DraftComponent,
     SearchComponent,
     PlayersListComponent,
-    DraftDialogComponent
+    DraftDialogComponent,
+    MyTeamComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +42,7 @@ import { MatListModule } from '@angular/material/list';
     MatCheckboxModule,
     MatPaginatorModule,
     MatDialogModule,
-    MatListModule
+    ItemListModule
   ]
 })
 export class DraftModule { }

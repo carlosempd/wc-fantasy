@@ -1,0 +1,21 @@
+<section class="my-team-container">
+    <app-toolbar></app-toolbar>
+
+
+    <div class="players-list flex-row justify-center gap-20">
+        <div class="flex-column gap-20 justify-start">
+            <app-item-list subheader="Goalkeepers" [players]="myPlayers.slice(0,2)">
+            </app-item-list>
+            <app-item-list subheader="Defenders" [players]="myPlayers.slice(0,5)">
+            </app-item-list>
+        </div>
+        <div class="flex-column gap-20 justify-start">
+            <app-item-list subheader="Midfielders" [players]="myPlayers.slice(0,5)">
+            </app-item-list>
+            <app-item-list subheader="Strikers" [players]="myPlayers.slice(0,5)">
+            </app-item-list>
+
+        </div>
+    </div>
+      
+</section>
