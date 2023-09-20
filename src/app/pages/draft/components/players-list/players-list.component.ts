@@ -1,11 +1,13 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Player } from 'src/app/core/interfaces/player.interface';
 import { FilterObject } from 'src/app/core/interfaces/utils.interface';
 import { FilterService } from 'src/app/core/services/filter.service';
 import { MockService } from 'src/app/core/services/mock.service';
+import { DraftDialogComponent } from '../draft-dialog/draft-dialog.component';
 
 @Component({
   selector: 'app-players-list',
@@ -20,6 +22,7 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
+    public dialog: MatDialog,
     private mockService: MockService,
     private filterService: FilterService
   ) {
@@ -56,5 +59,13 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.dataSource.filter = 
       `${ nameStringFilter }${ positionStringFilter }${ countryStringFilter }`;
+  }
+
+  draftSelection() {
+    const dialogRef = this.dialog.open(DraftDialogComponent, {
+      data: this.selection.selected,
+      enterAnimationDuration: '250ms',
+      exitAnimationDuration: '250ms'
+    })
   }
 }
