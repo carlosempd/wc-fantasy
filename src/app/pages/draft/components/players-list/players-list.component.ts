@@ -8,6 +8,7 @@ import { FilterObject } from 'src/app/core/interfaces/utils.interface';
 import { FilterService } from 'src/app/core/services/filter.service';
 import { MockService } from 'src/app/core/services/mock.service';
 import { DraftDialogComponent } from '../draft-dialog/draft-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-players-list',
@@ -19,6 +20,7 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
   dataSource!: MatTableDataSource<Player>;
   displayedColumns: string[] = ['select', 'name', 'position', 'age', 'nationality'];
   selection = new SelectionModel<Player>(true, []);
+  subscription: Subscription = new Subscription();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
@@ -30,11 +32,13 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource = new MatTableDataSource<Player>(this.players);
   }
   ngOnDestroy(): void {
-    this.filterService.filterSubject.unsubscribe();
+    this.subscription.unsubscribe();
   }
   ngOnInit(): void {
-    this.filterService.filterSubject
-      .subscribe((filterEvent: FilterObject) => this.filter(filterEvent));
+    this.subscription.add(
+      this.filterService.filterSubject
+        .subscribe((filterEvent: FilterObject) => this.filter(filterEvent))
+    );
 
     this.dataSource.filterPredicate = (data: Player, filterStr: string) => {
       return (
