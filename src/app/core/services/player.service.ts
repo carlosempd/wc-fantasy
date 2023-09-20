@@ -6,7 +6,14 @@ import { Player } from '../interfaces/player.interface';
   providedIn: 'root'
 })
 export class PlayerService {
-  draftedPlayers: Subject<Player[]> = new Subject<Player[]>();
+  draftedPlayersSubject: Subject<Player[]> = new Subject<Player[]>();
+  private draftedPlayers: Player[] = [];
 
   constructor() { }
+
+
+  draftPlayers(players: Player[]) {
+    const allDrafted = this.draftedPlayers.concat(players);
+    this.draftedPlayersSubject.next(allDrafted);
+  }
 }

@@ -9,6 +9,7 @@ import { FilterService } from 'src/app/core/services/filter.service';
 import { MockService } from 'src/app/core/services/mock.service';
 import { DraftDialogComponent } from '../draft-dialog/draft-dialog.component';
 import { Subscription } from 'rxjs';
+import { UtilService } from 'src/app/core/services/util.service';
 
 @Component({
   selector: 'app-players-list',
@@ -26,10 +27,10 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     public dialog: MatDialog,
     private mockService: MockService,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private utilService: UtilService
   ) {
-    this.players = this.mockService.getPlayers();
-    this.dataSource = new MatTableDataSource<Player>(this.players);
+    this.loadData(this.mockService.getPlayers());
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -49,11 +50,19 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+    this.loadPaginator();
   }
 
-  handleSelection() {
-    console.log(this.selection.selected);
+  loadData(players: Player[], loadPaginator: boolean = false) {
+    this.players = Array.from(players);
+    this.dataSource = new MatTableDataSource<Player>(this.players);
+    if (loadPaginator) {
+      this.loadPaginator();
+    }
+  }
+
+  loadPaginator() {
+    this.dataSource.paginator = this.paginator;
   }
 
   filter(filterObject: FilterObject) {
@@ -70,6 +79,18 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
       data: this.selection.selected,
       enterAnimationDuration: '250ms',
       exitAnimationDuration: '250ms'
-    })
+    });
+
+    dialogRef.afterClosed().subscribe( res => {
+      const playersSet = new Set(this.players);
+      this.selection.selected.forEach(element => {
+        playersSet.delete(element);
+      });
+      this.loadData(Array.from(playersSet), true);
+      this.utilService.showSnackbar(
+        'Players drafted succesfully!'
+      );
+      this.selection.clear();
+    });
   }
 }
