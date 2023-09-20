@@ -2,7 +2,7 @@
     <app-toolbar></app-toolbar>
 
 
-    <div class="players-list flex-row justify-center gap-20">
+    <div *ngIf="true else nodata" class="players-list flex-row justify-center gap-20">
         <div class="flex-column gap-20 justify-start">
             <app-item-list subheader="Goalkeepers" [players]="myPlayers.slice(0,2)">
             </app-item-list>
@@ -14,8 +14,18 @@
             </app-item-list>
             <app-item-list subheader="Strikers" [players]="myPlayers.slice(0,5)">
             </app-item-list>
-
         </div>
     </div>
-      
+    
+    <ng-template #nodata>
+        <section class="text-center">
+            <h3>
+                No players drafted yet, please go to draft view and select some players
+                to your team!
+            </h3>
+            <button (click)="goToDraft()" color="primary" mat-raised-button>
+                Go to draft
+            </button>
+        </section>
+    </ng-template>
 </section>
