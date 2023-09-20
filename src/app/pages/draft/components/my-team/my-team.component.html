@@ -4,6 +4,8 @@
 
     <div *ngIf="true else nodata" class="players-list flex-row justify-center gap-20">
         <div class="flex-column gap-20 justify-start">
+            <app-item-list subheader="Coach" [players]="myPlayers.slice(0,1)">
+            </app-item-list>
             <app-item-list subheader="Goalkeepers" [players]="myPlayers.slice(0,2)">
             </app-item-list>
             <app-item-list subheader="Defenders" [players]="myPlayers.slice(0,5)">
