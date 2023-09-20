@@ -2,7 +2,16 @@
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!-- Select -->
         <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>
+                <button
+                    *ngIf="selection.selected.length > 0"
+                    (click)="draftSelection()"
+                    mat-fab extended
+                    color="accent">
+                    <mat-icon>done_all</mat-icon>
+                    Draft
+                </button>
+            </th>
             <td mat-cell *matCellDef="let row">
                 <mat-checkbox
                     color="primary"

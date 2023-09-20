@@ -28,6 +28,11 @@
 	background-color: #3f51b583;
 }
 
+.mat-column-select {
+	max-width: 78px;
+	text-align: center;
+}
+
 mat-paginator {
 	position: sticky;
 	bottom: 0;
