@@ -5,6 +5,7 @@ import { DraftRoutingModule } from './draft-routing.module';
 import { ToolbarModule } from 'src/app/shared/components/toolbar/toolbar.module';
 import { SearchComponent } from './components/search/search.component';
 import { PlayersListComponent } from './components/players-list/players-list.component';
+import { DraftDialogComponent } from './components/draft-dialog/draft-dialog.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,13 +15,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
 
 
 @NgModule({
   declarations: [
     DraftComponent,
     SearchComponent,
-    PlayersListComponent
+    PlayersListComponent,
+    DraftDialogComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +38,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSelectModule,
     MatTableModule,
     MatCheckboxModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule,
+    MatListModule
   ]
 })
 export class DraftModule { }
