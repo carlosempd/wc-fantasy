@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FilterService } from 'src/app/core/services/filter.service';
 
 @Component({
   selector: 'app-search',
@@ -11,13 +12,22 @@ export class SearchComponent implements OnInit {
   value!: string;
   positions = new FormControl('');
   positionList: string[] = ['Striker', 'Midfielder', 'Defender', 'Goalkeeper'];
+  countries: string[] = ['Argentina', 'Germany', 'Brazil', 'Spain'];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private filterService: FilterService
+  ) {}
   ngOnInit(): void {
     this.searchForm = this.formBuilder.group({
       name: [''],
-      position: ['']
+      position: [''],
+      country: [''],
     })
+  }
+
+  emitfilter() {
+    this.filterService.filterSubject.next(this.searchForm.value);
   }
 
 }
