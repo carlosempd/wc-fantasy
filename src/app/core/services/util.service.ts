@@ -18,4 +18,16 @@ export class UtilService {
         panelClass: [`${type}-mat-snack-bar-container`]
       })
   }
+
+  setToLocalStorage(key: string, data: string) {
+    localStorage.setItem(key, data);
+  }
+
+  getFromLocalStorage(key: string) {
+    return JSON.parse(<string>localStorage.getItem(key));
+  }
+
+  removeFromLocalStorage(key: string) {
+    localStorage.removeItem(key);
+  }
 }

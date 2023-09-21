@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { POSITION, Player } from 'src/app/core/interfaces/player.interface';
-import { MockService } from 'src/app/core/services/mock.service';
 import { PlayerService } from 'src/app/core/services/player.service';
+import { UtilService } from 'src/app/core/services/util.service';
+import { AppConstants } from 'src/app/shared/app.constants';
 
 @Component({
   selector: 'app-my-team',
@@ -19,11 +20,12 @@ export class MyTeamComponent implements OnInit {
   subscription: Subscription = new Subscription();
 
   constructor(
-    private mockService: MockService,
     private router: Router,
     private playerService: PlayerService,
+    private utilService: UtilService
   ) {}
   ngOnInit(): void {    
+    this.myPlayers = this.utilService.getFromLocalStorage(AppConstants.MY_PLAYERS_KEY) || [];
     this.subscription.add(
       this.playerService.draftedPlayersSubject.subscribe(list => {
         this.myPlayers = list;
