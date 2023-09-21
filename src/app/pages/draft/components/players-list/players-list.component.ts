@@ -7,9 +7,9 @@ import { FilterObject } from 'src/app/core/interfaces/utils.interface';
 import { FilterService } from 'src/app/core/services/filter.service';
 import { MockService } from 'src/app/core/services/mock.service';
 import { DraftDialogComponent } from '../draft-dialog/draft-dialog.component';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { UtilService } from 'src/app/core/services/util.service';
-import { ResponseData } from 'src/app/core/interfaces/apiFootball.interface';
+import { GeneralResponse, ResponseData } from 'src/app/core/interfaces/apiFootball.interface';
 import { PlayerService } from 'src/app/core/services/player.service';
 
 @Component({
@@ -24,6 +24,7 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
   selection = new SelectionModel<ResponseData>(true, []);
   subscription: Subscription = new Subscription();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  players$: Observable<GeneralResponse> = this.playerService.players$;
 
   constructor(
     public dialog: MatDialog,
@@ -40,6 +41,9 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     // this.playerService.getPlayers().subscribe(response => {
     //   this.loadData(response.response, true);
+    // });
+    // this.players$.subscribe((res: GeneralResponse) => {
+    //   this.loadData(res.response, true);
     // });
     this.subscription.add(
       this.filterService.filterSubject

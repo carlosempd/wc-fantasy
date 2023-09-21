@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Player } from '../interfaces/player.interface';
+import { Observable, shareReplay } from 'rxjs';
 import { UtilService } from './util.service';
 import { AppConstants } from 'src/app/shared/app.constants';
 import { ApiService } from './api.service';
@@ -13,8 +12,10 @@ import { GeneralResponse, ResponseData } from '../interfaces/apiFootball.interfa
   providedIn: 'root'
 })
 export class PlayerService {
-  draftedPlayersSubject: Subject<Player[]> = new Subject<Player[]>();
   private draftedPlayers: ResponseData[] = [];
+  public players$: Observable<GeneralResponse> = this.getPlayers().pipe(
+    shareReplay(1)
+  )
 
   constructor(
     private utilService: UtilService,
@@ -22,19 +23,31 @@ export class PlayerService {
   ) { }
 
 
-  draftPlayers(players: ResponseData[]) {    
+  draftPlayers(players: ResponseData[]) {   
     this.draftedPlayers = this.draftedPlayers.concat(players);
     this.utilService.removeFromLocalStorage(AppConstants.MY_PLAYERS_KEY);
-    this.utilService.setToLocalStorage(AppConstants.MY_PLAYERS_KEY, JSON.stringify(this.draftedPlayers))
+    this.utilService.setToLocalStorage(
+      AppConstants.MY_PLAYERS_KEY,
+      JSON.stringify(this.draftedPlayers)
+    );
   }
 
-  getPlayers(pagination?: Pagination): Observable<GeneralResponse> {
+  private getPlayers(pagination?: Pagination): Observable<GeneralResponse> {
     const headers = new HttpHeaders({
       'X-RapidAPI-Key': environment.apiKey,
 			'X-RapidAPI-Host': environment.apiHost
     });
+
+    // Since api seems not to take HttpParams
+    // params are passed as string in url
+    let assemblyParamsString =
+      `?league=${ AppConstants.WORLD_CUP_ID }&season=${ AppConstants.SEASON }`;
+    if (pagination) {
+      assemblyParamsString = assemblyParamsString.concat(`&page=${ pagination.current + 1 }`)
+    }
+
     return this.apiService.get(
-      `${ environment.apiFootballUrl }/players?league=${ AppConstants.WORLD_CUP_ID }&season=${ AppConstants.SEASON }`,
+      `${ environment.apiFootballUrl }/players${ assemblyParamsString }`,
       undefined,
       headers
     )
