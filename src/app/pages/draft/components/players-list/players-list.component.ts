@@ -1,9 +1,8 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Player } from 'src/app/core/interfaces/player.interface';
 import { FilterObject } from 'src/app/core/interfaces/utils.interface';
 import { FilterService } from 'src/app/core/services/filter.service';
 import { MockService } from 'src/app/core/services/mock.service';
@@ -11,6 +10,7 @@ import { DraftDialogComponent } from '../draft-dialog/draft-dialog.component';
 import { Subscription } from 'rxjs';
 import { UtilService } from 'src/app/core/services/util.service';
 import { ResponseData } from 'src/app/core/interfaces/apiFootball.interface';
+import { PlayerService } from 'src/app/core/services/player.service';
 
 @Component({
   selector: 'app-players-list',
@@ -29,26 +29,22 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     public dialog: MatDialog,
     private mockService: MockService,
     private filterService: FilterService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private playerService: PlayerService
   ) {
-    this.loadData(this.mockService.getMockPlayers());
+    this.loadData(this.mockService.getMockPlayers(), true);
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
   ngOnInit(): void {
+    // this.playerService.getPlayers().subscribe(response => {
+    //   this.loadData(response.response, true);
+    // });
     this.subscription.add(
       this.filterService.filterSubject
         .subscribe((filterEvent: FilterObject) => this.filter(filterEvent))
     );
-
-    this.dataSource.filterPredicate = (data: ResponseData, filterStr: string) => {      
-      return (
-        `${ data.player.firstname }${ data.player.lastname }`.toLowerCase().includes(filterStr) ||
-        filterStr.includes(data.player.nationality) ||
-        filterStr.includes(data.statistics[0].games.position || '-')
-      )
-    }
   }
   ngAfterViewInit(): void {
     this.loadPaginator();
@@ -59,6 +55,14 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource = new MatTableDataSource<ResponseData>(this.playersData);
     if (loadPaginator) {
       this.loadPaginator();
+    }
+
+    this.dataSource.filterPredicate = (data: ResponseData, filterStr: string) => {      
+      return (
+        `${ data.player.firstname }${ data.player.lastname }`.toLowerCase().includes(filterStr) ||
+        filterStr.includes(data.player.nationality) ||
+        filterStr.includes(data.statistics[0].games.position || '-')
+      )
     }
   }
 

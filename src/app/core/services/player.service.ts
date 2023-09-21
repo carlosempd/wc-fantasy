@@ -34,7 +34,7 @@ export class PlayerService {
 			'X-RapidAPI-Host': environment.apiHost
     });
     return this.apiService.get(
-      environment.apiFootballUrl,
+      `${ environment.apiFootballUrl }/players?league=${ AppConstants.WORLD_CUP_ID }&season=${ AppConstants.SEASON }`,
       undefined,
       headers
     )
