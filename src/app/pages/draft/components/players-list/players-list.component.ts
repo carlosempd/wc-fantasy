@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { FilterObject } from 'src/app/core/interfaces/utils.interface';
 import { FilterService } from 'src/app/core/services/filter.service';
@@ -11,6 +11,7 @@ import { Observable, Subscription } from 'rxjs';
 import { UtilService } from 'src/app/core/services/util.service';
 import { GeneralResponse, ResponseData } from 'src/app/core/interfaces/apiFootball.interface';
 import { PlayerService } from 'src/app/core/services/player.service';
+import { Pagination } from 'src/app/core/interfaces/pagination.interface';
 
 @Component({
   selector: 'app-players-list',
@@ -23,6 +24,7 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
   displayedColumns: string[] = ['select', 'name', 'position', 'age', 'nationality'];
   selection = new SelectionModel<ResponseData>(true, []);
   subscription: Subscription = new Subscription();
+  resultsLength = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   players$: Observable<GeneralResponse> = this.playerService.players$;
 
@@ -33,33 +35,37 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     private utilService: UtilService,
     private playerService: PlayerService
   ) {
-    this.loadData(this.mockService.getMockPlayers(), true);
+    // this.loadData(this.mockService.getMockPlayers(), true);
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
   ngOnInit(): void {
-    // this.playerService.getPlayers().subscribe(response => {
-    //   this.loadData(response.response, true);
-    // });
-    // this.players$.subscribe((res: GeneralResponse) => {
-    //   this.loadData(res.response, true);
-    // });
+    this.players$.subscribe((res: GeneralResponse) => {
+      console.log('SUBSCRIPß', res.paging);
+      
+      this.resultsLength = res.paging.total*20;
+      this.loadData(res.response);
+    });
     this.subscription.add(
       this.filterService.filterSubject
         .subscribe((filterEvent: FilterObject) => this.filter(filterEvent))
     );
   }
   ngAfterViewInit(): void {
-    this.loadPaginator();
+    this.paginator.page
+      .subscribe((pageEvent: PageEvent) => {
+      const pageObject: Pagination =  {
+        current: pageEvent.pageIndex,
+        total: pageEvent.length
+      };
+      this.playerService.fetchNewDataPlayers(pageObject);
+    })
   }
 
-  loadData(playersData: ResponseData[], loadPaginator: boolean = false) {
+  loadData(playersData: ResponseData[]) {
     this.playersData = Array.from(playersData);
     this.dataSource = new MatTableDataSource<ResponseData>(this.playersData);
-    if (loadPaginator) {
-      this.loadPaginator();
-    }
 
     this.dataSource.filterPredicate = (data: ResponseData, filterStr: string) => {      
       return (
@@ -68,10 +74,6 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
         filterStr.includes(data.statistics[0].games.position || '-')
       )
     }
-  }
-
-  loadPaginator() {
-    this.dataSource.paginator = this.paginator;
   }
 
   filter(filterObject: FilterObject) {
@@ -95,7 +97,7 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
       this.selection.selected.forEach(element => {
         playersSet.delete(element);
       });
-      this.loadData(Array.from(playersSet), true);
+      this.loadData(Array.from(playersSet));
       this.utilService.showSnackbar(
         'Players drafted succesfully!'
       );

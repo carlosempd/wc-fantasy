@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import { BehaviorSubject, Observable, mergeMap, shareReplay } from 'rxjs';
 import { UtilService } from './util.service';
 import { AppConstants } from 'src/app/shared/app.constants';
 import { ApiService } from './api.service';
@@ -13,9 +13,12 @@ import { GeneralResponse, ResponseData } from '../interfaces/apiFootball.interfa
 })
 export class PlayerService {
   private draftedPlayers: ResponseData[] = [];
-  public players$: Observable<GeneralResponse> = this.getPlayers().pipe(
+  private _playersData$ = new BehaviorSubject<void>(undefined);
+  private playersRequest$: Observable<GeneralResponse> = this.getPlayers();
+  public players$ = this._playersData$.pipe(
+    mergeMap(() => this.playersRequest$),
     shareReplay(1)
-  )
+  );
 
   constructor(
     private utilService: UtilService,
@@ -30,6 +33,12 @@ export class PlayerService {
       AppConstants.MY_PLAYERS_KEY,
       JSON.stringify(this.draftedPlayers)
     );
+  }
+
+  fetchNewDataPlayers(pagination?: Pagination) {
+    console.log('NEEEW');  
+    this.playersRequest$ = this.getPlayers(pagination);
+    this._playersData$.next();
   }
 
   private getPlayers(pagination?: Pagination): Observable<GeneralResponse> {

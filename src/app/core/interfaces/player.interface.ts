@@ -19,7 +19,7 @@ export interface Birth {
 }
 
 export enum POSITION {
-    str = 'Striker',
+    str = 'Attacker',
     def = "Defender",
     mid = "Midfielder",
     gk = 'Goalkeeper'
