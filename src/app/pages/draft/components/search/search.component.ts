@@ -12,7 +12,7 @@ export class SearchComponent implements OnInit {
   value!: string;
   positions = new FormControl('');
   positionList: string[] = ['Striker', 'Midfielder', 'Defender', 'Goalkeeper', 'Coach'];
-  countries: string[] = ['Argentina', 'Germany', 'Brazil', 'Spain'];
+  countries: string[] = ['Argentina', 'Germany', 'Brazil', 'Spain', 'France'];
 
   constructor(
     private formBuilder: FormBuilder,

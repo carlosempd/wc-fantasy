@@ -3,20 +3,19 @@ export interface Player {
     name: string;
     firstname: string;
     lastname: string;
-    age: number;
+    age: number | null;
     birth: Birth;
     nationality: string;
-    height: string;
-    weight: string;
+    height: string | null;
+    weight: string | null;
     injured: boolean;
     photo: string;
-    position: POSITION;
 }
   
 export interface Birth {
-    date: string;
-    place: string;
-    country: string;
+    date: string | null;
+    place: string | null;
+    country: string | null;
 }
 
 export enum POSITION {

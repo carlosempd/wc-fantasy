@@ -4,29 +4,29 @@
 
     <div *ngIf="myPlayers.length>0 else nodata" class="players-list flex-row justify-center gap-20">
         <div class="flex-column gap-20 justify-start">
-            <app-item-list subheader="Coach" [players]="myPlayers.slice(0,1)">
+            <app-item-list subheader="Coach" [playersData]="myPlayers.slice(0,1)">
             </app-item-list>
             <app-item-list
                 *ngIf="goalkeepers.length"
                 subheader="Goalkeepers"
-                [players]="goalkeepers">
+                [playersData]="goalkeepers">
             </app-item-list>
             <app-item-list
                 *ngIf="defenders.length"
                 subheader="Defenders"
-                [players]="defenders">
+                [playersData]="defenders">
             </app-item-list>
         </div>
         <div class="flex-column gap-20 justify-start">
             <app-item-list
                 *ngIf="midfielders.length"
                 subheader="Midfielders"
-                [players]="midfielders">
+                [playersData]="midfielders">
             </app-item-list>
             <app-item-list
                 *ngIf="strikers.length"
                 subheader="Strikers"
-                [players]="strikers">
+                [playersData]="strikers">
             </app-item-list>
         </div>
     </div>

@@ -54,71 +54,71 @@ export interface League {
 }
 
 export interface Games {
-    appearences: number
-    lineups: number
-    minutes: number
-    number: any
-    position: string
-    rating?: string
-    captain: boolean
+    appearences: number | null;
+    lineups: number | null;
+    minutes: number | null;
+    number: any | null;
+    position: string | null;
+    rating?: string | null;
+    captain: boolean | null;
 }
 
 export interface Substitutes {
-    in: number
-    out: number
-    bench: number
+    in: number | null;
+    out: number | null;
+    bench: number | null;
 }
 
 export interface Shots {
-    total?: number
-    on?: number
+    total?: number | null;
+    on?: number | null;
 }
   
 export interface Goals {
-    total: number
-    conceded?: number
-    assists?: number
-    saves: any
+    total: number | null;
+    conceded?: number | null;
+    assists?: number | null;
+    saves: any | null;
 }
   
 export interface Passes {
-    total?: number
-    key?: number
-    accuracy?: number
+    total?: number | null;
+    key?: number | null;
+    accuracy?: number | null;
 }
   
 export interface Tackles {
-    total?: number
-    blocks?: number
-    interceptions?: number
+    total?: number | null;
+    blocks?: number | null;
+    interceptions?: number | null;
 }
   
 export interface Duels {
-    total?: number
-    won?: number
+    total?: number | null;
+    won?: number | null;
 }
 
 export interface Dribbles {
-	attempts?: number
-	success?: number
-	past: any
+	attempts?: number | null;
+	success?: number | null;
+	past: any | null;
   }
   
 export interface Fouls {
-	drawn?: number
-	committed?: number
+	drawn?: number | null;
+	committed?: number | null;
 }
   
 export interface Cards {
-	yellow: number
-	yellowred: number
-	red: number
+	yellow: number | null;
+	yellowred: number | null;
+	red: number | null;
 }
   
 export interface Penalty {
-	won: any
-	commited: any
-	scored?: number
-	missed?: number
-	saved?: number
+	won: any | null;
+	commited: any | null;
+	scored?: number | null;
+	missed?: number | null;
+	saved?: number | null;
 }

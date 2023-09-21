@@ -10,6 +10,7 @@ import { MockService } from 'src/app/core/services/mock.service';
 import { DraftDialogComponent } from '../draft-dialog/draft-dialog.component';
 import { Subscription } from 'rxjs';
 import { UtilService } from 'src/app/core/services/util.service';
+import { ResponseData } from 'src/app/core/interfaces/apiFootball.interface';
 
 @Component({
   selector: 'app-players-list',
@@ -17,10 +18,10 @@ import { UtilService } from 'src/app/core/services/util.service';
   styleUrls: ['./players-list.component.scss']
 })
 export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
-  players: Player[] = [];
-  dataSource!: MatTableDataSource<Player>;
+  playersData: ResponseData[] = [];
+  dataSource!: MatTableDataSource<ResponseData>;
   displayedColumns: string[] = ['select', 'name', 'position', 'age', 'nationality'];
-  selection = new SelectionModel<Player>(true, []);
+  selection = new SelectionModel<ResponseData>(true, []);
   subscription: Subscription = new Subscription();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -30,7 +31,7 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     private filterService: FilterService,
     private utilService: UtilService
   ) {
-    this.loadData(this.mockService.getPlayers());
+    this.loadData(this.mockService.getMockPlayers());
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -41,11 +42,11 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
         .subscribe((filterEvent: FilterObject) => this.filter(filterEvent))
     );
 
-    this.dataSource.filterPredicate = (data: Player, filterStr: string) => {
+    this.dataSource.filterPredicate = (data: ResponseData, filterStr: string) => {      
       return (
-        filterStr.includes(data.name) ||
-        filterStr.includes(data.nationality) ||
-        filterStr.includes(data.position)
+        `${ data.player.firstname }${ data.player.lastname }`.toLowerCase().includes(filterStr) ||
+        filterStr.includes(data.player.nationality) ||
+        filterStr.includes(data.statistics[0].games.position || '-')
       )
     }
   }
@@ -53,9 +54,9 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.loadPaginator();
   }
 
-  loadData(players: Player[], loadPaginator: boolean = false) {
-    this.players = Array.from(players);
-    this.dataSource = new MatTableDataSource<Player>(this.players);
+  loadData(playersData: ResponseData[], loadPaginator: boolean = false) {
+    this.playersData = Array.from(playersData);
+    this.dataSource = new MatTableDataSource<ResponseData>(this.playersData);
     if (loadPaginator) {
       this.loadPaginator();
     }
@@ -66,7 +67,7 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   filter(filterObject: FilterObject) {
-    const nameStringFilter = filterObject.name?.trim().toLowerCase();
+    const nameStringFilter = filterObject.name?.trim().toLowerCase() || '';
     const positionStringFilter = filterObject.position.toString().replace(',', '');
     const countryStringFilter = filterObject.country.toString().replace(',', '');
 
@@ -82,7 +83,7 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe( res => {
-      const playersSet = new Set(this.players);
+      const playersSet = new Set(this.playersData);
       this.selection.selected.forEach(element => {
         playersSet.delete(element);
       });

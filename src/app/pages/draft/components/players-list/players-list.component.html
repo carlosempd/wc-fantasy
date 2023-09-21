@@ -30,10 +30,10 @@
                     <div class="thumbnail">
                         <img
                             loading="lazy"
-                            [src]="element.photo"
+                            [src]="element.player.photo"
                             alt="Thumbnail Image">
                     </div>
-                    <span>{{ element.firstname }} {{ element.lastname }}</span>
+                    <span>{{ element.player.firstname }} {{ element.player.lastname }}</span>
                 </section>
             </td>
         </ng-container>
@@ -41,21 +41,21 @@
         <ng-container matColumnDef="position">
             <th mat-header-cell *matHeaderCellDef>Position</th>
             <td mat-cell *matCellDef="let element">
-                {{ element.position }}
+                {{ element.statistics[0].games.position }}
             </td>
         </ng-container>
         <!-- Age -->
         <ng-container matColumnDef="age">
             <th mat-header-cell *matHeaderCellDef>Age</th>
             <td mat-cell *matCellDef="let element">
-                {{ element.age }}
+                {{ element.player.age }}
             </td>
         </ng-container>
         <!-- Nationality -->
         <ng-container matColumnDef="nationality">
             <th mat-header-cell *matHeaderCellDef>Nationality</th>
             <td mat-cell *matCellDef="let element">
-                {{ element.nationality }}
+                {{ element.player.nationality }}
             </td>
         </ng-container>
     

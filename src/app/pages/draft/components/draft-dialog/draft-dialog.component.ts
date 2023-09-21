@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Player } from 'src/app/core/interfaces/player.interface';
+import { ResponseData } from 'src/app/core/interfaces/apiFootball.interface';
 import { PlayerService } from 'src/app/core/services/player.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class DraftDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DraftDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Player[],
+    @Inject(MAT_DIALOG_DATA) public data: ResponseData[],
     private playerService: PlayerService
   ) {}
 

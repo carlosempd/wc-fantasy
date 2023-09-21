@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Player } from 'src/app/core/interfaces/player.interface';
+import { ResponseData } from 'src/app/core/interfaces/apiFootball.interface';
 
 @Component({
   selector: 'app-item-list',
@@ -7,7 +7,7 @@ import { Player } from 'src/app/core/interfaces/player.interface';
   styleUrls: ['./item-list.component.scss']
 })
 export class ItemListComponent {
-  @Input() players: Player[] = [];
+  @Input() playersData: ResponseData[] = [];
   @Input() subheader!: string;
 
 }

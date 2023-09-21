@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { POSITION, Player } from 'src/app/core/interfaces/player.interface';
+import { ResponseData } from 'src/app/core/interfaces/apiFootball.interface';
+import { POSITION } from 'src/app/core/interfaces/player.interface';
 import { PlayerService } from 'src/app/core/services/player.service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { AppConstants } from 'src/app/shared/app.constants';
@@ -12,11 +13,11 @@ import { AppConstants } from 'src/app/shared/app.constants';
   styleUrls: ['./my-team.component.scss']
 })
 export class MyTeamComponent implements OnInit {
-  myPlayers: Player[] = [];
-  defenders: Player[] = [];
-  midfielders: Player[] = [];
-  strikers: Player[] = [];
-  goalkeepers: Player[] = [];
+  myPlayers: ResponseData[] = [];
+  defenders: ResponseData[] = [];
+  midfielders: ResponseData[] = [];
+  strikers: ResponseData[] = [];
+  goalkeepers: ResponseData[] = [];
   subscription: Subscription = new Subscription();
 
   constructor(
@@ -26,18 +27,18 @@ export class MyTeamComponent implements OnInit {
   ) {}
   ngOnInit(): void {    
     this.myPlayers = this.utilService.getFromLocalStorage(AppConstants.MY_PLAYERS_KEY) || [];
-    this.subscription.add(
-      this.playerService.draftedPlayersSubject.subscribe(list => {
-        this.myPlayers = list;
-        this.arrangePlayers();
-      })
-    );
+    // this.subscription.add(
+    //   this.playerService.draftedPlayersSubject.subscribe(list => {
+    //     this.myPlayers = list;
+    //     this.arrangePlayers();
+    //   })
+    // );
     this.arrangePlayers()
   }
 
   arrangePlayers() {
     this.myPlayers.forEach(element => {
-      switch (element.position) {
+      switch (element.statistics[0].games.position) {
         case POSITION.def:
           this.defenders.push(element);
           break;
