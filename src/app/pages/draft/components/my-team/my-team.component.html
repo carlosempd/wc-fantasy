@@ -1,8 +1,28 @@
 <section class="my-team-container">
     <app-toolbar></app-toolbar>
 
+    <div 
+        *ngIf="myPlayers.length"
+        class="flex-row justify-center gap-20">
+        <button (click)="emptyTeam()" color="primary" mat-raised-button>
+            <mat-icon>delete_forever</mat-icon>
+            Empy my team
+        </button>
+        <button (click)="goToDraft()" color="primary" mat-raised-button>
+            <mat-icon>handshake</mat-icon>
+            Go to draft
+        </button>
+    </div>
 
-    <div *ngIf="myPlayers.length>0 else nodata" class="players-list flex-row justify-center gap-20">
+    <p *ngIf="checkTeamLength()"
+        class="text-center flex-row justify-center msg-warning">
+        {{ warningMessage }}
+    </p>
+
+    <div
+        *ngIf="myPlayers.length>0 else nodata"
+        class="players-list flex-row justify-center gap-20">
+
         <div class="flex-column gap-20 justify-start">
             <app-item-list subheader="Coach" [playersData]="myPlayers.slice(0,1)">
             </app-item-list>
@@ -38,6 +58,7 @@
                 to your team!
             </h3>
             <button (click)="goToDraft()" color="primary" mat-raised-button>
+                <mat-icon>handshake</mat-icon>
                 Go to draft
             </button>
         </section>

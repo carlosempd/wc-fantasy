@@ -5,7 +5,7 @@ import { ResponseData } from 'src/app/core/interfaces/apiFootball.interface';
 import { POSITION } from 'src/app/core/interfaces/player.interface';
 import { PlayerService } from 'src/app/core/services/player.service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { AppConstants } from 'src/app/shared/app.constants';
+import { AppConstants, Messages } from 'src/app/shared/app.constants';
 
 @Component({
   selector: 'app-my-team',
@@ -19,6 +19,7 @@ export class MyTeamComponent implements OnInit {
   strikers: ResponseData[] = [];
   goalkeepers: ResponseData[] = [];
   subscription: Subscription = new Subscription();
+  warningMessage = Messages.MISSING_PLAYERS;
 
   constructor(
     private router: Router,
@@ -26,7 +27,8 @@ export class MyTeamComponent implements OnInit {
     private utilService: UtilService
   ) {}
   ngOnInit(): void {    
-    this.myPlayers = this.utilService.getFromLocalStorage(AppConstants.MY_PLAYERS_KEY) || [];
+    this.myPlayers = this.utilService
+      .getFromLocalStorage(AppConstants.MY_PLAYERS_KEY) || [];
     // this.subscription.add(
     //   this.playerService.draftedPlayersSubject.subscribe(list => {
     //     this.myPlayers = list;
@@ -59,5 +61,21 @@ export class MyTeamComponent implements OnInit {
 
   goToDraft() {
     this.router.navigate(['draft']);
+  }
+
+  emptyTeam() {
+    this.myPlayers = [];
+    this.defenders = [];
+    this.midfielders = [];
+    this.strikers = [];
+    this.goalkeepers = [];
+    this.utilService.removeFromLocalStorage(AppConstants.MY_PLAYERS_KEY);
+  }
+
+  checkTeamLength(): boolean {
+    return this.defenders.length < AppConstants.MIN_DEFENDERS
+      || this.midfielders.length < AppConstants.MIN_MIDFIELDERS
+      || this.strikers.length < AppConstants.MIN_STRIKERS
+      || this.goalkeepers.length < AppConstants.MIN_GOALKEEPERS
   }
 }

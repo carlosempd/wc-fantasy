@@ -2,6 +2,12 @@
     padding-top: 80px;
 }
 
+.msg-warning {
+    background-color: rgba(208, 208, 24, 0.396);
+    margin-top: 10px;
+    padding: 10px;
+}
+
 @media (max-width: 510px) {
     .players-list {
         flex-direction: column !important;
