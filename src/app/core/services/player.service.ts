@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, mergeMap, shareReplay } from 'rxjs';
+import { BehaviorSubject, Observable, mergeMap, shareReplay, tap } from 'rxjs';
 import { UtilService } from './util.service';
 import { AppConstants } from 'src/app/shared/app.constants';
 import { ApiService } from './api.service';
@@ -16,8 +16,11 @@ export class PlayerService {
   private draftedPlayers: ResponseData[] = [];
   private _playersData$ = new BehaviorSubject<void>(undefined);
   private playersRequest$: Observable<GeneralResponse> = this.getPlayers();
+  public isLoading$ = new BehaviorSubject<boolean>(false);
   public players$ = this._playersData$.pipe(
+    tap(() => this.isLoading$.next(true)),
     mergeMap(() => this.playersRequest$),
+    tap(() => this.isLoading$.next(false)),
     shareReplay(1)
   );
 
@@ -47,7 +50,6 @@ export class PlayerService {
   }
 
   fetchNewDataPlayers(pagination?: Pagination) {
-    console.log('NEEEW');  
     this.playersRequest$ = this.getPlayers(pagination);
     this._playersData$.next();
   }

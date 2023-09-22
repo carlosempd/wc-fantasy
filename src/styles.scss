@@ -63,6 +63,11 @@ h1, h2, h3, h4, h5, h6, p {
     @extend .toast;
 }
 
+.error-mat-snack-bar-container {
+    --mdc-snackbar-container-color: rgba(194, 47, 47, 0.677) !important;
+    @extend .toast;
+}
+
 .text-center {
     text-align: center;
 }

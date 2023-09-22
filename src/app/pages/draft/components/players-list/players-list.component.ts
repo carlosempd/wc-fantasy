@@ -5,7 +5,6 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { FilterObject } from 'src/app/core/interfaces/utils.interface';
 import { FilterService } from 'src/app/core/services/filter.service';
-import { MockService } from 'src/app/core/services/mock.service';
 import { DraftDialogComponent } from '../draft-dialog/draft-dialog.component';
 import { Observable, Subscription } from 'rxjs';
 import { UtilService } from 'src/app/core/services/util.service';
@@ -27,6 +26,8 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
   resultsLength = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   players$: Observable<GeneralResponse> = this.playerService.players$;
+  isLoading$: Observable<boolean> = this.playerService.isLoading$;
+  loadingData = false;
 
   constructor(
     public dialog: MatDialog,
@@ -39,17 +40,34 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription.unsubscribe();
   }
   ngOnInit(): void {
-    this.players$.subscribe((res: GeneralResponse) => {
-      console.log('SUBSCRIPß', res.paging);
-      
-      this.resultsLength = res.paging.total*20;
-      const cleanedDraftedPlayers = 
-        this.playerService.cleanDraftedPlayersFromList(res.response);
-      this.loadData(cleanedDraftedPlayers);
-    });
+    this.subscription.add(
+      this.isLoading$.subscribe(isLoad => {
+        this.loadingData = isLoad;
+      })
+    );
+    this.subscription.add(
+      this.players$
+        .subscribe((res: GeneralResponse) => {
+          console.log('SUBSCRIPß', res.paging);
+          
+          this.resultsLength = res.paging.total*20;
+          const cleanedDraftedPlayers = 
+            this.playerService.cleanDraftedPlayersFromList(res.response);
+          this.loadData(cleanedDraftedPlayers);
+          if (res.errors.length) {
+            this.utilService.showSnackbar(
+              'Something went wrong, try again later',
+              'ok',
+              1500,
+              'error'
+            );
+          }
+        })
+      );
     this.subscription.add(
       this.filterService.filterSubject
         .subscribe((filterEvent: FilterObject) => this.filter(filterEvent))
+      
     );
   }
   ngAfterViewInit(): void {
@@ -93,15 +111,17 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe( res => {
-      const playersSet = new Set(this.playersData);
-      this.selection.selected.forEach(element => {
-        playersSet.delete(element);
-      });
-      this.loadData(Array.from(playersSet));
-      this.utilService.showSnackbar(
-        'Players drafted succesfully!'
-      );
-      this.selection.clear();
+      if (res) {
+        const playersSet = new Set(this.playersData);
+        this.selection.selected.forEach(element => {
+          playersSet.delete(element);
+        });
+        this.loadData(Array.from(playersSet));
+        this.utilService.showSnackbar(
+          'Players drafted succesfully!'
+        );
+        this.selection.clear();
+      }
     });
   }
 }
