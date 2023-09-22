@@ -30,13 +30,11 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     public dialog: MatDialog,
-    private mockService: MockService,
     private filterService: FilterService,
     private utilService: UtilService,
     private playerService: PlayerService
-  ) {
-    // this.loadData(this.mockService.getMockPlayers(), true);
-  }
+  ) {}
+  
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
@@ -45,7 +43,9 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log('SUBSCRIPß', res.paging);
       
       this.resultsLength = res.paging.total*20;
-      this.loadData(res.response);
+      const cleanedDraftedPlayers = 
+        this.playerService.cleanDraftedPlayersFromList(res.response);
+      this.loadData(cleanedDraftedPlayers);
     });
     this.subscription.add(
       this.filterService.filterSubject

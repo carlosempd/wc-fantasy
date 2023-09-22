@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 import { Pagination } from '../interfaces/pagination.interface';
 import { GeneralResponse, ResponseData } from '../interfaces/apiFootball.interface';
+import { Player } from '../interfaces/player.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,16 @@ export class PlayerService {
       AppConstants.MY_PLAYERS_KEY,
       JSON.stringify(this.draftedPlayers)
     );
+  }
+
+  cleanDraftedPlayersFromList(players: ResponseData[]): ResponseData[] {
+    return players.filter(el => {
+      return !this.draftedPlayers.some(el2 => el2.player.id == el.player.id)
+    })
+  }
+
+  isPresentId(obj1: Player, obj2: Player): boolean {
+    return obj1.id === obj2.id
   }
 
   fetchNewDataPlayers(pagination?: Pagination) {
