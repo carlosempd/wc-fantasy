@@ -112,7 +112,9 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   draftSelection() {
     const dialogRef = this.dialog.open(DraftDialogComponent, {
-      data: this.selection.selected,
+      data: {
+        selectedPlayers:  this.selection.selected
+      },
       enterAnimationDuration: '250ms',
       exitAnimationDuration: '250ms'
     });

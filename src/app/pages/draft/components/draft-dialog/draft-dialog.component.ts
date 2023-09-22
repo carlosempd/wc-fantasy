@@ -12,7 +12,7 @@ export class DraftDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DraftDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ResponseData[],
+    @Inject(MAT_DIALOG_DATA) public data: { selectedPlayers: ResponseData[]},
     private playerService: PlayerService
   ) {}
 
@@ -22,7 +22,7 @@ export class DraftDialogComponent {
   }
 
   draftAction() {
-    this.playerService.draftPlayers(this.data);
+    this.playerService.draftPlayers(this.data.selectedPlayers);
     this.closeDialog();
   }
 }
