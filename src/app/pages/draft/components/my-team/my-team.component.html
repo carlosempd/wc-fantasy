@@ -24,8 +24,17 @@
         class="players-list flex-row justify-center gap-20">
 
         <div class="flex-column gap-20 justify-start">
-            <app-item-list subheader="Coach" [playersData]="myPlayers.slice(0,1)">
-            </app-item-list>
+            <button
+                *ngIf="!coachName"
+                (click)="openPickCoachDialog()"
+                mat-raised-button>
+                <mat-icon>hail</mat-icon>
+                Pick coach
+            </button>
+            <span class="coach"  *ngIf="coachName">
+                <h4 class="coach-title">Coach</h4>
+                <h3>{{ coachName }}</h3>
+            </span>
             <app-item-list
                 *ngIf="goalkeepers.length"
                 subheader="Goalkeepers"

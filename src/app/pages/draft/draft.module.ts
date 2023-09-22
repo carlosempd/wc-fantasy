@@ -8,6 +8,7 @@ import { PlayersListComponent } from './components/players-list/players-list.com
 import { DraftDialogComponent } from './components/draft-dialog/draft-dialog.component';
 import { MyTeamComponent } from './components/my-team/my-team.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CoachDialogComponent } from './components/coach-dialog/coach-dialog.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ItemListModule } from 'src/app/shared/components/item-list/item-list.module';
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ItemListModule } from 'src/app/shared/components/item-list/item-list.mo
     SearchComponent,
     PlayersListComponent,
     DraftDialogComponent,
-    MyTeamComponent
+    MyTeamComponent,
+    CoachDialogComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { ItemListModule } from 'src/app/shared/components/item-list/item-list.mo
     MatCheckboxModule,
     MatPaginatorModule,
     MatDialogModule,
-    ItemListModule
+    ItemListModule,
+    MatAutocompleteModule
   ]
 })
 export class DraftModule { }

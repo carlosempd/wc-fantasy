@@ -122,3 +122,10 @@ export interface Penalty {
 	missed?: number | null;
 	saved?: number | null;
 }
+
+export interface Coach {
+    name: string;
+    firstname: string;
+    lastname: string;
+    age: number | null;
+}
