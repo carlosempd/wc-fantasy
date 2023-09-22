@@ -48,8 +48,6 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription.add(
       this.players$
         .subscribe((res: GeneralResponse) => {
-          console.log('SUBSCRIPß', res.paging);
-          
           this.resultsLength = res.paging.total*20;
           const cleanedDraftedPlayers = 
             this.playerService.cleanDraftedPlayersFromList(res.response);
@@ -66,7 +64,13 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     this.subscription.add(
       this.filterService.filterSubject
-        .subscribe((filterEvent: FilterObject) => this.filter(filterEvent))
+        .subscribe((filterEvent: FilterObject) => {
+          if (filterEvent.name) {
+            this.playerService.fetchNewDataPlayers(undefined, filterEvent.name)
+          } else {
+            this.filter(filterEvent)
+          }
+        })
       
     );
   }
@@ -84,6 +88,9 @@ export class PlayersListComponent implements OnInit, OnDestroy, AfterViewInit {
   loadData(playersData: ResponseData[]) {
     this.playersData = Array.from(playersData);
     this.dataSource = new MatTableDataSource<ResponseData>(this.playersData);
+    this.playerService.distinctCountries$.next(
+      [...new Set(this.playersData.map(element => element.player.nationality))]
+    );
 
     this.dataSource.filterPredicate = (data: ResponseData, filterStr: string) => {      
       return (

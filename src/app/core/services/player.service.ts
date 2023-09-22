@@ -17,6 +17,7 @@ export class PlayerService {
   private _playersData$ = new BehaviorSubject<void>(undefined);
   private playersRequest$: Observable<GeneralResponse> = this.getPlayers();
   public isLoading$ = new BehaviorSubject<boolean>(false);
+  public distinctCountries$ = new BehaviorSubject<string[]>([]);
   public players$ = this._playersData$.pipe(
     tap(() => this.isLoading$.next(true)),
     mergeMap(() => this.playersRequest$),
@@ -49,23 +50,30 @@ export class PlayerService {
     return obj1.id === obj2.id
   }
 
-  fetchNewDataPlayers(pagination?: Pagination) {
-    this.playersRequest$ = this.getPlayers(pagination);
+  fetchNewDataPlayers(pagination?: Pagination, searchName?: string) {
+    this.playersRequest$ = this.getPlayers(pagination, searchName);
     this._playersData$.next();
   }
 
-  private getPlayers(pagination?: Pagination): Observable<GeneralResponse> {
+  private getPlayers(pagination?: Pagination, searchName?: string): Observable<GeneralResponse> {
     const headers = new HttpHeaders({
       'X-RapidAPI-Key': environment.apiKey,
 			'X-RapidAPI-Host': environment.apiHost
     });
-
+    
     // Since api seems not to take HttpParams
     // params are passed as string in url
     let assemblyParamsString =
       `?league=${ AppConstants.WORLD_CUP_ID }&season=${ AppConstants.SEASON }`;
     if (pagination) {
-      assemblyParamsString = assemblyParamsString.concat(`&page=${ pagination.current + 1 }`)
+      assemblyParamsString = assemblyParamsString.concat(
+        `&page=${ pagination.current + 1 }`
+      )
+    }
+    if (searchName) {
+      assemblyParamsString = assemblyParamsString.concat(
+        `&search=${ searchName }`
+      );
     }
 
     return this.apiService.get(

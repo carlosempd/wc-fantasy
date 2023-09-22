@@ -34,7 +34,7 @@ export class MyTeamComponent implements OnInit {
 
     this.coachName = 
       this.utilService
-        .getFromLocalStorage(AppConstants.COACH_KEY).name || '';
+        .getFromLocalStorage(AppConstants.COACH_KEY)?.name || '';
 
     this.arrangePlayers()
   }
