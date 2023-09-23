@@ -17,12 +17,12 @@ export class DraftDialogComponent {
   ) {}
 
 
-  closeDialog() {
-    this.dialogRef.close();
+  closeDialog(resultData?: ResponseData[]) {
+    this.dialogRef.close(resultData);
   }
 
   draftAction() {
     this.playerService.draftPlayers(this.data.selectedPlayers);
-    this.closeDialog();
+    this.closeDialog(this.data.selectedPlayers);
   }
 }
