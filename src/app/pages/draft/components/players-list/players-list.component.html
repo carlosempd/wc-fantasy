@@ -7,6 +7,7 @@
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
                 <button
+                    class="draft-btn"
                     *ngIf="selection.selected.length > 0"
                     (click)="draftSelection()"
                     mat-fab extended

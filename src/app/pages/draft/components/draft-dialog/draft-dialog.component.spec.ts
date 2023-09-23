@@ -14,6 +14,7 @@ import {
 describe('DraftDialogComponent', () => {
   let component: DraftDialogComponent;
   let fixture: ComponentFixture<DraftDialogComponent>;
+  let dialogRef: MatDialogRef<DraftDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,18 +26,33 @@ describe('DraftDialogComponent', () => {
         MatSnackBarModule
       ],
       providers: [
-        { provide: MatDialogRef, useValue: {} },
+        { provide: MatDialogRef, useValue: { close: () => {} } },
         { provide: MAT_DIALOG_DATA, useValue: {} }
       ]
     })
     .compileComponents();
 
+    // fixture = TestBed.createComponent(DraftDialogComponent);
+    // component = fixture.componentInstance;
+    // fixture.detectChanges();
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(DraftDialogComponent);
     component = fixture.componentInstance;
+    dialogRef = TestBed.inject(MatDialogRef);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should close the dialog when closeDialog is called', () => {
+    spyOn(dialogRef, 'close');
+
+    component.closeDialog();
+
+    expect(dialogRef.close).toHaveBeenCalled();
   });
 });

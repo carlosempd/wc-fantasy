@@ -4,11 +4,14 @@
     <div 
         *ngIf="myPlayers.length"
         class="flex-row justify-center gap-20">
-        <button (click)="emptyTeam()" color="primary" mat-raised-button>
+        <button class="empty-team-btn" (click)="emptyTeam()" color="primary" mat-raised-button>
             <mat-icon>delete_forever</mat-icon>
-            Empy my team
+            Empty my team
         </button>
-        <button (click)="goToDraft()" color="primary" mat-raised-button>
+        <button
+            class="draft-btn"
+            (click)="goToDraft()"
+            color="primary" mat-raised-button>
             <mat-icon>handshake</mat-icon>
             Go to draft
         </button>

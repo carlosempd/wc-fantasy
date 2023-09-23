@@ -41,7 +41,7 @@ export class MyTeamComponent implements OnInit {
 
   arrangePlayers() {
     this.myPlayers.forEach(element => {
-      switch (element.statistics[0].games.position) {
+      switch (element.statistics[0]?.games.position) {
         case POSITION.def:
           this.defenders.push(element);
           break;
