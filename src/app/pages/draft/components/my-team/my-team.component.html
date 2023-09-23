@@ -1,0 +1,78 @@
+<section class="my-team-container">
+    <app-toolbar></app-toolbar>
+
+    <div 
+        *ngIf="myPlayers.length"
+        class="buttons flex-row justify-center gap-20">
+        <button class="empty-team-btn" (click)="emptyTeam()" color="primary" mat-raised-button>
+            <mat-icon>delete_forever</mat-icon>
+            Empty my team
+        </button>
+        <button
+            class="draft-btn"
+            (click)="goToDraft()"
+            color="primary" mat-raised-button>
+            <mat-icon>handshake</mat-icon>
+            Go to draft
+        </button>
+    </div>
+
+    <p *ngIf="checkTeamLength()"
+        class="text-center flex-row justify-center msg-warning">
+        {{ warningMessage }}
+    </p>
+
+    <div
+        *ngIf="myPlayers.length>0 else nodata"
+        class="players-list flex-row justify-center gap-20">
+
+        <div class="flex-column gap-20 justify-start">
+            <button
+                *ngIf="!coachName"
+                (click)="openPickCoachDialog()"
+                mat-raised-button>
+                <mat-icon>hail</mat-icon>
+                Pick coach
+            </button>
+            <span class="coach"  *ngIf="coachName">
+                <h4 class="coach-title">Coach</h4>
+                <h3>{{ coachName }}</h3>
+            </span>
+            <app-item-list
+                *ngIf="goalkeepers.length"
+                subheader="Goalkeepers"
+                [playersData]="goalkeepers">
+            </app-item-list>
+            <app-item-list
+                *ngIf="defenders.length"
+                subheader="Defenders"
+                [playersData]="defenders">
+            </app-item-list>
+        </div>
+        <div class="flex-column gap-20 justify-start">
+            <app-item-list
+                *ngIf="midfielders.length"
+                subheader="Midfielders"
+                [playersData]="midfielders">
+            </app-item-list>
+            <app-item-list
+                *ngIf="strikers.length"
+                subheader="Strikers"
+                [playersData]="strikers">
+            </app-item-list>
+        </div>
+    </div>
+    
+    <ng-template #nodata>
+        <section class="text-center">
+            <h3>
+                No players drafted yet, please go to draft view and select some players
+                to your team!
+            </h3>
+            <button (click)="goToDraft()" color="primary" mat-raised-button>
+                <mat-icon>handshake</mat-icon>
+                Go to draft
+            </button>
+        </section>
+    </ng-template>
+</section>

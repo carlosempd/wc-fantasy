@@ -1,0 +1,35 @@
+<section class="coach-container">
+    <h1 mat-dialog-title>Pick a coach for your team</h1>
+
+    <mat-dialog-content>
+        <form class="example-form">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Coaches</mat-label>
+                <input
+                type="text"
+                placeholder="Pick one"
+                aria-label="Number"
+                matInput
+                [formControl]="formControl"
+                [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                <mat-option
+                    *ngFor="let option of filteredOptions | async"
+                    [value]="option.name">
+                    {{ option.firstname }} {{ option.lastname }}
+                </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button  mat-button mat-dialog-close>
+            Cancel
+        </button>
+        <button
+            (click)="save()"
+            color="primary" mat-raised-button>
+            Save
+        </button>
+    </mat-dialog-actions>
+</section>

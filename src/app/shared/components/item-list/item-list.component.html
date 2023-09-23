@@ -1,0 +1,12 @@
+<mat-list>
+    <div *ngIf="subheader" mat-subheader>{{ subheader }}</div>
+
+    <mat-list-item class="item" *ngFor="let data of playersData">
+        <img matListItemAvatar [src]="data.player.photo" alt="player photo">
+        <h3 matListItemTitle>{{ data.player.name }}</h3>
+        <p matListItemLine>
+            <span>{{ data.statistics[0].games.position }}</span>
+            <span> -- {{ data.player.nationality }}</span>
+        </p>
+    </mat-list-item>
+</mat-list>

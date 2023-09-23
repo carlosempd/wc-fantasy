@@ -1,26 +1,25 @@
 export interface Player {
-    id: number
-    name: string
-    firstname: string
-    lastname: string
-    age: number
-    birth: Birth
-    nationality: string
-    height: string
-    weight: string
-    injured: boolean
-    photo: string,
-    position: position;
+    id: number;
+    name: string;
+    firstname: string;
+    lastname: string;
+    age: number | null;
+    birth: Birth;
+    nationality: string;
+    height: string | null;
+    weight: string | null;
+    injured: boolean;
+    photo: string;
 }
   
 export interface Birth {
-    date: string
-    place: string
-    country: string
+    date: string | null;
+    place: string | null;
+    country: string | null;
 }
 
-enum position {
-    str = 'Striker',
+export enum POSITION {
+    str = 'Attacker',
     def = "Defender",
     mid = "Midfielder",
     gk = 'Goalkeeper'
